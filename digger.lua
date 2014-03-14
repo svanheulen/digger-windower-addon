@@ -55,7 +55,7 @@ function get_chocobo_buff()
     return false
 end
 
-function check_zone_change(new_id, old_id, new_name, old_name)
+function check_zone_change(new_id, old_id)
     for _,rental_zone in pairs(rental_zones) do
         if new_id == rental_zone then
             windower.send_command(string.format('timers c "Chocobo Area Delay" %d down', area_delay + area_delay_lag))
