@@ -2,21 +2,21 @@
 Copyright 2014 Seth VanHeulen
 
 This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
+it under the terms of the GNU Lesser General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+GNU Lesser General Public License for more details.
 
-You should have received a copy of the GNU General Public License
+You should have received a copy of the GNU Lesser General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --]]
 
 _addon.name = 'digger'
-_addon.version = '1.0.0'
+_addon.version = '1.0.1'
 _addon.command = 'digger'
 _addon.author = 'Seth VanHeulen'
 
@@ -87,12 +87,16 @@ end
 
 function check_incoming_chunk(id, original, modified, injected, blocked)
     if id == 47 and dig_delay > 0 then
-        windower.send_command(string.format('timers c "Chocobo Dig Delay" %d down', dig_delay))
+        player_id = string.byte(original, 5) + string.byte(original, 6) * 256
+        if player_id == windower.ffxi.get_player().id then
+            windower.send_command(string.format('timers c "Chocobo Dig Delay" %d down', dig_delay))
+        end
     elseif id == 54 then
         message_id = string.byte(original, 11) + ((string.byte(original, 12) % 128) * 256)
         for _,fail_message_id in pairs(fail_message_ids) do
             if message_id == fail_message_id then
                 settings.accuracy.total = settings.accuracy.total + 1
+                update_fatigue()
                 settings:save('all')
                 windower.add_to_chat(207, string.format('dig accuracy: %d%% (%d/%d), items until fatigued: %d, gysahl greens remaining: %d', (settings.accuracy.successful / settings.accuracy.total) * 100, settings.accuracy.successful, settings.accuracy.total, settings.fatigue.remaining, get_gysahl_count()))
             end
