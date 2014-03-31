@@ -16,14 +16,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --]]
 
 _addon.name = 'digger'
-_addon.version = '1.1.0'
+_addon.version = '1.2.0'
 _addon.command = 'digger'
 _addon.author = 'Seth VanHeulen'
 
+-- default settings
+
 defaults = {}
-defaults.rank = 'amateur'
+defaults.delay = {}
+defaults.delay.area = 60
+defaults.delay.lag = 3
+defaults.delay.dig = 15
 defaults.fatigue = {}
-defaults.fatigue.date = os.date('%Y-%m-%d', os.time() + 32400)
+defaults.fatigue.date = os.date('!%Y-%m-%d', os.time() + 32400)
 defaults.fatigue.remaining = 100
 defaults.accuracy = {}
 defaults.accuracy.successful = 0
@@ -32,13 +37,12 @@ defaults.accuracy.total = 0
 config = require('config')
 settings = config.load(defaults)
 
-area_delay = 60
-area_delay_lag = 3
-dig_delay = 15
+-- global constants
 
 fail_message_ids = {7032, 7191, 7195, 7205, 7213, 7224, 7247, 7253, 7533, 7679}
 success_message_ids = {6379, 6393, 6406, 6552, 7372, 7687, 7712}
 ease_message_ids = {7107, 7266, 7270, 7280, 7288, 7299, 7322, 7328, 7608, 7754}
+chocobo_zone_ids = {2, 4, 51, 52, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 114, 115, 116, 117, 118, 119, 120, 121, 123, 124, 125}
 
 -- binary helper functions
 
@@ -79,7 +83,7 @@ end
 -- stats helper functions
 
 function update_stats(count)
-    today = os.date('%Y-%m-%d', os.time() + 32400)
+    today = os.date('!%Y-%m-%d', os.time() + 32400)
     if settings.fatigue.date ~= today then
         settings.fatigue.date = today
         settings.fatigue.remaining = 100
@@ -102,26 +106,19 @@ end
 -- event callback functions
 
 function check_zone_change(new_id, old_id)
-    windower.send_command(string.format('timers c "Chocobo Area Delay" %d down', area_delay + area_delay_lag))
+    for _,chocobo_zone_id in pairs(chocobo_zone_ids) do
+        if new_id == chocobo_zone_id then
+            windower.send_command(string.format('timers c "Chocobo Area Delay" %d down', settings.delay.area + settings.delay.lag))
+            return
+        end
+    end
 end
 
 function check_incoming_chunk(id, original, modified, injected, blocked)
-    if id == 47 and dig_delay > 0 then
-        if windower.ffxi.get_player().id == original:unpack_uint32(5) then
-            windower.send_command(string.format('timers c "Chocobo Dig Delay" %d down', dig_delay))
-        end
-    elseif id == 54 then
-        message_id = original:unpack_uint16(11) % 0x8000
-        for _,fail_message_id in pairs(fail_message_ids) do
-            if message_id == fail_message_id then
-                update_stats(0)
-                display_stats()
-            end
-        end
-    elseif id == 42 then
+    if id == 0x2A and windower.ffxi.get_player().id == original:unpack_uint32(5) then
         message_id = original:unpack_uint16(27) % 0x8000
         for _,success_message_id in pairs(success_message_ids) do
-            if message_id == success_message_id and get_chocobo_buff() == true then
+            if message_id == success_message_id and get_chocobo_buff() then
                 update_stats(-1)
                 display_stats()
                 return
@@ -132,51 +129,17 @@ function check_incoming_chunk(id, original, modified, injected, blocked)
                 update_stats(1)
             end
         end
+    elseif id == 0x2F and settings.delay.dig > 0 and windower.ffxi.get_player().id == original:unpack_uint32(5) then
+        windower.send_command(string.format('timers c "Chocobo Dig Delay" %d down', settings.delay.dig))
+    elseif id == 0x36 and windower.ffxi.get_player().id == original:unpack_uint32(5) then
+        message_id = original:unpack_uint16(11) % 0x8000
+        for _,fail_message_id in pairs(fail_message_ids) do
+            if message_id == fail_message_id then
+                update_stats(0)
+                display_stats()
+            end
+        end
     end
-end
-
-function set_dig_rank(rank)
-    rank = rank:lower()
-    if rank == 'amateur' then
-        area_delay = 60
-        dig_delay = 15
-    elseif rank == 'recruit' then
-        area_delay = 55
-        dig_delay = 10
-    elseif rank == 'initiate' then
-        area_delay = 50
-        dig_delay = 5
-    elseif rank == 'novice' then
-        area_delay = 45
-        dig_delay = 0
-    elseif rank == 'apprentice' then
-        area_delay = 40
-        dig_delay = 0
-    elseif rank == 'journeyman' then
-        area_delay = 35
-        dig_delay = 0
-    elseif rank == 'craftsman' then
-        area_delay = 30
-        dig_delay = 0
-    elseif rank == 'artisan' then
-        area_delay = 25
-        dig_delay = 0
-    elseif rank == 'adept' then
-        area_delay = 20
-        dig_delay = 0
-    elseif rank == 'veteran' then
-        area_delay = 15
-        dig_delay = 0
-    elseif rank == 'expert' then
-        area_delay = 10
-        dig_delay = 0
-    else
-        windower.add_to_chat(167, string.format('invalid digging rank: %s', rank))
-        return false
-    end
-    windower.add_to_chat(200, string.format('setting digging rank to %s: area delay = %d seconds, dig delay = %d seconds', rank, area_delay, dig_delay))
-    settings.rank = rank
-    return true
 end
 
 function digger_command(...)
@@ -186,17 +149,50 @@ function digger_command(...)
         settings.accuracy.total = 0
         settings:save('all')
     elseif #arg == 2 and arg[1]:lower() == 'rank' then
-        if set_dig_rank(arg[2]) == true then
-            settings:save('all')
+        rank = arg[2]:lower()
+        if rank == 'amateur' then
+            settings.delay.area = 60
+            settings.delay.dig = 15
+        elseif rank == 'recruit' then
+            settings.delay.area = 55
+            settings.delay.dig = 10
+        elseif rank == 'initiate' then
+            settings.delay.area = 50
+            settings.delay.dig = 5
+        elseif rank == 'novice' then
+            settings.delay.area = 45
+            settings.delay.dig = 0
+        elseif rank == 'apprentice' then
+            settings.delay.area = 40
+            settings.delay.dig = 0
+        elseif rank == 'journeyman' then
+            settings.delay.area = 35
+            settings.delay.dig = 0
+        elseif rank == 'craftsman' then
+            settings.delay.area = 30
+            settings.delay.dig = 0
+        elseif rank == 'artisan' then
+            settings.delay.area = 25
+            settings.delay.dig = 0
+        elseif rank == 'adept' then
+            settings.delay.area = 20
+            settings.delay.dig = 0
+        elseif rank == 'veteran' then
+            settings.delay.area = 15
+            settings.delay.dig = 0
+        elseif rank == 'expert' then
+            settings.delay.area = 10
+            settings.delay.dig = 0
+        else
+            windower.add_to_chat(167, string.format('invalid digging rank: %s', rank))
+            return
         end
+        windower.add_to_chat(200, string.format('setting digging rank to %s: area delay = %d seconds, dig delay = %d seconds', rank, settings.delay.area, settings.delay.dig))
+        settings:save('all')
     else
         windower.add_to_chat(167, 'usage: digger rank <rank>')
         windower.add_to_chat(167, '        digger reset')
     end
-end
-
-function digger_load()
-    set_dig_rank(settings.rank)
 end
 
 -- register event callbacks
@@ -204,4 +200,3 @@ end
 windower.register_event('zone change', check_zone_change)
 windower.register_event('incoming chunk', check_incoming_chunk)
 windower.register_event('addon command', digger_command)
-windower.register_event('load', digger_load)
