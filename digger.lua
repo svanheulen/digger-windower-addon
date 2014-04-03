@@ -15,10 +15,17 @@ You should have received a copy of the GNU Lesser General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --]]
 
+-- addon information
+
 _addon.name = 'digger'
-_addon.version = '1.2.0'
+_addon.version = '1.2.1'
 _addon.command = 'digger'
 _addon.author = 'Seth VanHeulen'
+
+-- modules
+
+config = require('config')
+require('pack')
 
 -- default settings
 
@@ -34,7 +41,6 @@ defaults.accuracy = {}
 defaults.accuracy.successful = 0
 defaults.accuracy.total = 0
 
-config = require('config')
 settings = config.load(defaults)
 
 -- global constants
@@ -43,19 +49,6 @@ fail_message_ids = {7032, 7191, 7195, 7205, 7213, 7224, 7247, 7253, 7533, 7679}
 success_message_ids = {6379, 6393, 6406, 6552, 7372, 7687, 7712}
 ease_message_ids = {7107, 7266, 7270, 7280, 7288, 7299, 7322, 7328, 7608, 7754}
 chocobo_zone_ids = {2, 4, 51, 52, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 114, 115, 116, 117, 118, 119, 120, 121, 123, 124, 125}
-
--- binary helper functions
-
-function string.unpack_uint16(str, i)
-    return str:byte(i + 1) * 0x100 + str:byte(i)
-end
-
-function string.unpack_uint32(str, i)
-    local num = str:byte(i + 3)
-    num = num * 0x100 + str:byte(i + 2)
-    num = num * 0x100 + str:byte(i + 1)
-    return num * 0x100 + str:byte(i)
-end
 
 -- buff helper function
 
@@ -115,8 +108,8 @@ function check_zone_change(new_id, old_id)
 end
 
 function check_incoming_chunk(id, original, modified, injected, blocked)
-    if id == 0x2A and windower.ffxi.get_player().id == original:unpack_uint32(5) then
-        message_id = original:unpack_uint16(27) % 0x8000
+    if id == 0x2A and windower.ffxi.get_player().id == original:unpack('I', 5) then
+        message_id = original:unpack('H', 27) % 0x8000
         for _,success_message_id in pairs(success_message_ids) do
             if message_id == success_message_id and get_chocobo_buff() then
                 update_stats(-1)
@@ -129,10 +122,10 @@ function check_incoming_chunk(id, original, modified, injected, blocked)
                 update_stats(1)
             end
         end
-    elseif id == 0x2F and settings.delay.dig > 0 and windower.ffxi.get_player().id == original:unpack_uint32(5) then
+    elseif id == 0x2F and settings.delay.dig > 0 and windower.ffxi.get_player().id == original:unpack('I', 5) then
         windower.send_command(string.format('timers c "Chocobo Dig Delay" %d down', settings.delay.dig))
-    elseif id == 0x36 and windower.ffxi.get_player().id == original:unpack_uint32(5) then
-        message_id = original:unpack_uint16(11) % 0x8000
+    elseif id == 0x36 and windower.ffxi.get_player().id == original:unpack('I', 5) then
+        message_id = original:unpack('H', 11) % 0x8000
         for _,fail_message_id in pairs(fail_message_ids) do
             if message_id == fail_message_id then
                 update_stats(0)
