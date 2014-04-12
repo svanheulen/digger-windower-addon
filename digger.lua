@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -- addon information
 
 _addon.name = 'digger'
-_addon.version = '1.3.0'
+_addon.version = '1.3.1'
 _addon.command = 'digger'
 _addon.author = 'Seth VanHeulen'
 
@@ -116,7 +116,9 @@ end
 
 function check_zone_change(new_zone_id, old_zone_id)
     if chocobo_zone[new_zone_id] then
-        windower.send_command(string.format('timers c "Chocobo Area Delay" %d down', settings.delay.area + settings.delay.lag))
+        windower.send_command('timers c "Chocobo Area Delay" %d down':format(settings.delay.area + settings.delay.lag))
+    else
+        windower.send_command('timers d "Chocobo Area Delay"')
     end
 end
 
@@ -130,7 +132,7 @@ function check_incoming_chunk(id, original, modified, injected, blocked)
             update_stats(1)
         end
     elseif id == 0x2F and settings.delay.dig > 0 and windower.ffxi.get_player().id == original:unpack('I', 5) then
-        windower.send_command(string.format('timers c "Chocobo Dig Delay" %d down', settings.delay.dig))
+        windower.send_command('timers c "Chocobo Dig Delay" %d down':format(settings.delay.dig))
     elseif id == 0x36 and windower.ffxi.get_player().id == original:unpack('I', 5) then
         local message_id = original:unpack('H', 11) % 0x8000
         if fail_message[message_id] then
@@ -182,10 +184,10 @@ function digger_command(...)
             settings.delay.area = 10
             settings.delay.dig = 0
         else
-            windower.add_to_chat(167, string.format('invalid digging rank: %s', rank))
+            windower.add_to_chat(167, 'invalid digging rank: %s':format(rank))
             return
         end
-        windower.add_to_chat(200, string.format('setting digging rank to %s: area delay = %d seconds, dig delay = %d seconds', rank, settings.delay.area, settings.delay.dig))
+        windower.add_to_chat(200, 'setting digging rank to %s: area delay = %d seconds, dig delay = %d seconds':format(rank, settings.delay.area, settings.delay.dig))
         settings:save('all')
     else
         windower.add_to_chat(167, 'usage: digger rank <rank>')
