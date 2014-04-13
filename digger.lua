@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -- addon information
 
 _addon.name = 'digger'
-_addon.version = '1.3.1'
+_addon.version = '1.3.2'
 _addon.command = 'digger'
 _addon.author = 'Seth VanHeulen'
 
@@ -120,6 +120,7 @@ function check_zone_change(new_zone_id, old_zone_id)
     else
         windower.send_command('timers d "Chocobo Area Delay"')
     end
+    windower.send_command('timers d "Chocobo Dig Delay"')
 end
 
 function check_incoming_chunk(id, original, modified, injected, blocked)
