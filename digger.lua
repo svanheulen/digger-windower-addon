@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -- addon information
 
 _addon.name = 'digger'
-_addon.version = '1.3.2'
+_addon.version = '1.3.3'
 _addon.command = 'digger'
 _addon.author = 'Seth VanHeulen'
 
@@ -191,7 +191,7 @@ function digger_command(...)
         windower.add_to_chat(200, 'setting digging rank to %s: area delay = %d seconds, dig delay = %d seconds':format(rank, settings.delay.area, settings.delay.dig))
         settings:save('all')
     else
-        windower.add_to_chat(167, 'usage: digger rank <rank>')
+        windower.add_to_chat(167, 'usage: digger rank <crafting rank>')
         windower.add_to_chat(167, '        digger reset')
     end
 end
