@@ -17,7 +17,7 @@ messages[108] = {ease=7298, fail=7223, full=7221, success=6384}
 messages[109] = {ease=7316, fail=7241, full=7239, success=6406}
 messages[110] = {ease=7316, fail=7241, full=7239, success=6406}
 messages[111] = {ease=7316, fail=7241, full=7239, success=6565}
-messages[112] = {success=6397}
+messages[112] = {ease=7333, fail=7258, full=7256, success=6397}
 messages[113] = {ease=7636, fail=7561, full=7559, success=6384}
 messages[114] = {ease=7636, fail=7561, full=7559, success=6384}
 messages[115] = {ease=7135, fail=7060, full=7058, success=6384}
@@ -32,5 +32,5 @@ messages[123] = {ease=7636, fail=7561, full=7559, success=6384}
 messages[124] = {ease=7636, fail=7561, full=7559, success=6384}
 messages[125] = {ease=7294, fail=7219, full=7217, success=6384}
 messages[126] = {ease=7294, fail=7219, full=7217, success=6384}
-messages[127] = {success=6384}
-messages[128] = {success=6384}
+messages[127] = {ease=7294, fail=7219, full=7217, success=6384}
+messages[128] = {ease=7294, fail=7219, full=7217, success=6384}
