@@ -33,7 +33,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -- addon information
 
 _addon.name = 'digger'
-_addon.version = '2.0.2'
+_addon.version = '2.0.3'
 _addon.command = 'digger'
 _addon.author = 'Seth VanHeulen (Acacia@Odin)'
 
@@ -77,7 +77,7 @@ end
 
 function get_gysahl_count()
     local count = 0
-    for _,item in pairs(windower.ffxi.get_items().inventory) do
+    for _,item in pairs(windower.ffxi.get_items(0)) do
         if type(item) == 'table' and item.id == 4545 and item.status == 0 then
             count = count + item.count
         end
