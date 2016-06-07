@@ -10,6 +10,8 @@ zones = {
     4: 6424, # bibiki bay
     51: 6471, # wajaom woodlands
     52: 6472, # bhaflau thickets
+    61: 6481, # mount zhayolm
+    79: 6499, # caedarva mire
     100: 6520, # west ronfaure
     101: 6521, # east ronfaure
     102: 6522, # la theine plateau
@@ -21,6 +23,9 @@ zones = {
     108: 6528, # konschtat highlands
     109: 6529, # pashhow marshlands
     110: 6530, # rolanberry fields
+    111: 6531, # beaucedine glacier
+    112: 6532, # xarcabard
+    113: 6533, # cape teriggan
     114: 6534, # eastern altepa desert
     115: 6535, # west sarutabaruta
     116: 6536, # east sarutabaruta
@@ -29,7 +34,11 @@ zones = {
     119: 6539, # meriphataud mountains
     120: 6540, # sauromugue champaign
     121: 6541, # the sanctuary of zi'tah
+    122: 6542, # ro'maeve
     123: 6543, # yuhtunga jungle
     124: 6544, # yhoator jungle
     125: 6545, # western altepa desert
+    126: 6546, # qufim island
+    127: 6547, # behemonth's dominion
+    128: 6548, # valley of sorrows
 }
