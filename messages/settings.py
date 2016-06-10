@@ -2,7 +2,9 @@ search = {
     'fail': b'You dig and you dig, but find nothing.\x7f1\x00\x07',
     'success': b'Obtained: \x7f\x80\x01\x01\x05#\x82\x80\x80\x80.\x7f1\x00\x07',
     'full': b'You dig up \x01\x01\x01 \x01\x05$\x82\x80\x80\x80, but your inventory is full.\x07You regretfully throw the \x01\x05#\x82\x80\x80\x80 away.\x7f1\x00\x07',
-    'ease': b'It appears your chocobo found this item with ease.\x7f1\x00\x07'
+    'ease': b'It appears your chocobo found this item with ease.\x7f1\x00\x07',
+    'points': b'You discover a cache of beastmen resources and receive \n\x00 conquest point\x7f\x92\x00[/s]!\x7f1\x00\x07',
+    'standing': b'You discover a cache of beastmen resources and receive \n\x00 imperial standing!\x7f1\x00\x07'
 }
 
 zones = {
