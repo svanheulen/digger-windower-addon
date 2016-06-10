@@ -17,6 +17,7 @@ also work properly with the Blue Racing Silks bonus.
 
 The available commands are:
     digger rank <crafting rank>
-        Sets your digging rank.
+        Sets your digging rank. Accepts rank name (like "Artisan") or
+        area delay (like "A25").
     digger stats [clear]
         Displays or clears digging accuracy statistics.
