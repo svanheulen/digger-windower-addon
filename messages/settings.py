@@ -3,13 +3,18 @@ search = {
     'success': b'Obtained: \x7f\x80\x01\x01\x05#\x82\x80\x80\x80.\x7f1\x00\x07',
     'full': b'You dig up \x01\x01\x01 \x01\x05$\x82\x80\x80\x80, but your inventory is full.\x07You regretfully throw the \x01\x05#\x82\x80\x80\x80 away.\x7f1\x00\x07',
     'ease': b'It appears your chocobo found this item with ease.\x7f1\x00\x07',
-    'points': b'You discover a cache of beastmen resources and receive \n\x00 conquest point\x7f\x92\x00[/s]!\x7f1\x00\x07',
-    'standing': b'You discover a cache of beastmen resources and receive \n\x00 imperial standing!\x7f1\x00\x07'
+    'points': b'You discover a cache of beastman resources and receive \n\x00 conquest point\x7f\x92\x00[/s]!\x7f1\x00\x07',
+    'standing': b'You discover a cache of beastman resources and receive \n\x00 Imperial sStanding!\x7f1\x00\x07',
+    'notes': b'You discover a cache of beastman confederate resources and receive \n\x00 allied note\x7f\x92\x00[/s]!\x7f1\x00\x07'
 }
 
 zones = {
     2: 6422, # carpenters' landing
     4: 6424, # bibiki bay
+    5: 6425, # uleguerand range
+    7: 6427, # attohwa chasm
+    24: 6444, # lufaise meadows
+    25: 6445, # misareaux coast
     51: 6471, # wajaom woodlands
     52: 6472, # bhaflau thickets
     61: 6481, # mount zhayolm
