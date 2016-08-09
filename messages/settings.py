@@ -4,7 +4,7 @@ search = {
     'full': b'You dig up \x01\x01\x01 \x01\x05$\x82\x80\x80\x80, but your inventory is full.\x07You regretfully throw the \x01\x05#\x82\x80\x80\x80 away.\x7f1\x00\x07',
     'ease': b'It appears your chocobo found this item with ease.\x7f1\x00\x07',
     'points': b'You discover a cache of beastman resources and receive \n\x00 conquest point\x7f\x92\x00[/s]!\x7f1\x00\x07',
-    'standing': b'You discover a cache of beastman resources and receive \n\x00 Imperial sStanding!\x7f1\x00\x07',
+    'standing': b'You discover a cache of beastman resources and receive \n\x00 Imperial Standing!\x7f1\x00\x07',
     'notes': b'You discover a cache of beastman confederate resources and receive \n\x00 allied note\x7f\x92\x00[/s]!\x7f1\x00\x07'
 }
 
@@ -19,6 +19,18 @@ zones = {
     52: 6472, # bhaflau thickets
     61: 6481, # mount zhayolm
     79: 6499, # caedarva mire
+    81: 6501, # east ronfaure [s]
+    82: 6502, # jugner forest [s]
+    83: 6503, # vunkerl inlet [s]
+    84: 6504, # batallia downs [s]
+    88: 6508, # north gustaberg [s]
+    89: 6509, # grauberg [s]
+    90: 6510, # pashhow marshlands [s]
+    91: 6511, # rolanberry fields [s]
+    95: 6515, # west sarutabaruta [a]
+    96: 6516, # fort karugo-narugo [s]
+    97: 6517, # meriphataud mountains [s]
+    98: 6518, # sauromugue champaign [s]
     100: 6520, # west ronfaure
     101: 6521, # east ronfaure
     102: 6522, # la theine plateau
@@ -48,4 +60,6 @@ zones = {
     126: 6546, # qufim island
     127: 6547, # behemonth's dominion
     128: 6548, # valley of sorrows
+    136: 6556, # beaucedine glacier [s]
+    137: 6557, # xarcabard [s]
 }
