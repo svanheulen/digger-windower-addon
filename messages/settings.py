@@ -5,7 +5,8 @@ search = {
     'ease': b'It appears your chocobo found this item with ease.\x7f1\x00\x07',
     'points': b'You discover a cache of beastman resources and receive \n\x00 conquest point\x7f\x92\x00[/s]!\x7f1\x00\x07',
     'standing': b'You discover a cache of beastman resources and receive \n\x00 Imperial Standing!\x7f1\x00\x07',
-    'notes': b'You discover a cache of beastman confederate resources and receive \n\x00 allied note\x7f\x92\x00[/s]!\x7f1\x00\x07'
+    'notes': b'You discover a cache of beastman confederate resources and receive \n\x00 allied note\x7f\x92\x00[/s]!\x7f1\x00\x07',
+    'bayld': b'You receive \n\x00 bayld!\x7f1\x00\x07',
 }
 
 zones = {
@@ -62,4 +63,11 @@ zones = {
     128: 6548, # valley of sorrows
     136: 6556, # beaucedine glacier [s]
     137: 6557, # xarcabard [s]
+    260: 85595, # yashe hunting grounds
+    261: 85596, # ceizak battlegrounds
+    262: 85597, # foret de hennetiel
+    263: 85598, # yorcia weald
+    265: 85600, # morimar basalt fields
+    266: 85601, # marjami ravine
+    267: 85602, # kamihr drifts
 }
